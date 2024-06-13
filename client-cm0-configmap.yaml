@@ -1,0 +1,25 @@
+apiVersion: v1
+data:
+  BotApp.yml: |
+    - !policy
+      id: BotApp
+      body:
+        # Define a human user, a non-human identity that represents an application, and a secret
+      - !user Dave
+      - !host myDemoApp
+      - !variable secretVar
+      - !permit
+        # Give permissions to the human user to update the secret and fetch the secret.
+        role: !user Dave
+        privileges: [read, update, execute]
+        resource: !variable secretVar
+      - !permit
+        # Give permissions to the non-human identity to fetch the secret.
+        role: !host myDemoApp
+        privileges: [read, execute]
+        resource: !variable secretVar
+kind: ConfigMap
+metadata:
+  labels:
+    io.kompose.service: client
+  name: client-cm0

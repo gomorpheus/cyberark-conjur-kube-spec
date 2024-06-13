@@ -1,0 +1,20 @@
+apiVersion: v1
+data:
+  default.conf: |
+    server {
+        listen              443 ssl;
+        server_name         proxy;
+        access_log          /var/log/nginx/access.log;
+
+        ssl_certificate     /etc/nginx/tls/nginx.crt;
+        ssl_certificate_key /etc/nginx/tls/nginx.key;
+
+        location / {
+          proxy_pass http://conjur;
+        }
+    }
+kind: ConfigMap
+metadata:
+  labels:
+    io.kompose.service: proxy
+  name: proxy-cm0
